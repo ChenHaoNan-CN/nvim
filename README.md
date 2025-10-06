@@ -138,5 +138,6 @@ sudo pacman -Rs neovim
 # 源码安装的卸载
 cd neovim/build && sudo make uninstall
 ```
-
+```bash
 cd ~/.config && git clone https://github.com/ChenHaoNan-CN/nvim.git && nvim
+```
