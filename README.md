@@ -1,92 +1,142 @@
+
 ## APT (Debian/Ubuntu)
 
 ```bash
-# 更新软件包列表
+# 方法1：从系统仓库安装（可能版本较老）
 sudo apt update
+sudo apt install neovim
 
-# 安装neofetch
-sudo apt install neofetch
+# 方法2：安装最新稳定版（推荐）
+sudo apt install -y software-properties-common
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt update
+sudo apt install neovim
 
-# 或者安装最新版本（如果系统仓库版本较老）
-sudo apt install -y git
-git clone https://github.com/dylanaraps/neofetch.git
-cd neofetch
-sudo make install
+# 方法3：安装unstable版本（最新功能）
+sudo add-apt-repository ppa:neovim-ppa/unstable
+sudo apt update
+sudo apt install neovim
+
+# 验证安装
+nvim --version
 ```
 
 ## DNF (Fedora/RHEL/CentOS)
 
 ```bash
-# 安装neofetch
-sudo dnf install neofetch
+# 方法1：从默认仓库安装
+sudo dnf install neovim
 
-# 如果找不到包，先启用EPEL仓库
+# 方法2：启用EPEL仓库安装更新版本
 sudo dnf install -y epel-release
-sudo dnf install neofetch
+sudo dnf install neovim
 
-# 或者从Copr仓库安装更新版本
-sudo dnf copr enable konimex/neofetch
-sudo dnf install neofetch
+# 方法3：从Copr仓库安装最新版本
+sudo dnf copr enable agriffis/neovim-nightly
+sudo dnf install neovim
+
+# 方法4：Fedora直接安装（推荐Fedora用户）
+sudo dnf install -y neovim python3-neovim
+
+# 验证安装
+nvim --version
 ```
 
-## Yay (Arch Linux/Manjaro)
+## Pacman (Arch Linux/Manjaro)
 
 ```bash
-# 如果还没有安装yay
-sudo pacman -S --needed git base-devel
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
+# 方法1：安装稳定版
+sudo pacman -S neovim
 
-# 使用yay安装neofetch
-yay -S neofetch
+# 方法2：安装nightly版本（最新功能）
+sudo pacman -S neovim-nightly
 
-# 或者使用官方pacman安装
-sudo pacman -S neofetch
+# 方法3：安装包含Python支持的版本
+sudo pacman -S neovim python-pynvim
+
+# 验证安装
+nvim --version
 ```
 
-## 验证安装
+## 通用安装方法（所有系统）
 
-安装完成后，运行以下命令验证：
-
+### 从源码编译安装（获取最新版本）
 ```bash
-neofetch --version
-neofetch
-```
+# 安装依赖
+# Ubuntu/Debian:
+sudo apt install -y git cmake gettext ninja-build
 
-## 额外配置
+# Fedora/RHEL:
+sudo dnf install -y git cmake gettext ninja-build
 
-### 对于Arch Linux用户：
-```bash
-# 安装开发版本（可选）
-yay -S neofetch-git
-```
+# Arch Linux:
+sudo pacman -S git cmake gettext ninja-build
 
-### 对于所有系统，如果需要从源码安装：
-```bash
-git clone https://github.com/dylanaraps/neofetch.git
-cd neofetch
+# 编译安装
+git clone https://github.com/neovim/neovim
+cd neovim
+make CMAKE_BUILD_TYPE=RelWithDebInfo
 sudo make install
+
+# 或者使用CMake直接安装
+cd neovim && rm -rf build/
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make
+sudo make install
+```
+
+### 使用AppImage（便携式）
+```bash
+# 下载最新AppImage
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod u+x nvim.appimage
+./nvim.appimage
+
+# 或安装到系统
+sudo mv nvim.appimage /usr/local/bin/nvim
+```
+
+### 使用包管理器（通用）
+```bash
+# 使用Snap
+sudo snap install nvim --classic
+
+# 使用Flatpak
+flatpak install flathub io.neovim.nvim
+
+# 使用Homebrew（Linux/macOS）
+brew install neovim
+```
+
+## 验证安装和功能
+
+```bash
+# 检查版本
+nvim --version
+
+# 检查健康状态
+nvim +checkhealth
+
+# 测试基本功能
+nvim +q
 ```
 
 ## 卸载方法
 
 ```bash
 # APT
-sudo apt remove neofetch
+sudo apt remove neovim
+sudo add-apt-repository --remove ppa:neovim-ppa/stable
 
 # DNF
-sudo dnf remove neofetch
+sudo dnf remove neovim
 
-# Yay/pacman
-sudo pacman -Rs neofetch
-# 或者
-yay -Rs neofetch
+# Pacman
+sudo pacman -Rs neovim
+
+# 源码安装的卸载
+cd neovim/build && sudo make uninstall
 ```
 
-选择适合你系统的命令进行安装即可！
-
-
-```bash
-rm -r ~/.config/neofetch && cd ~/.config && git clone https://github.com/ChenHaoNan-CN/neofetch.git && neofetch
-```
+cd ~/.config && git clone https://github.com/ChenHaoNan-CN/nvim.git && nvim
