@@ -139,5 +139,5 @@ sudo pacman -Rs neovim
 cd neovim/build && sudo make uninstall
 ```
 ```bash
-cd ~/.config && git clone https://github.com/ChenHaoNan-CN/nvim.git && nvim
+cd ~/.config && git clone https://github.com/ChenHaoNan-CN/nvim.git && nvim  #安装主题
 ```
